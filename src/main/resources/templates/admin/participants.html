@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Participants | EventEase</title><link rel="stylesheet" href="/css/app.css"></head>
+<body><div class="app-shell"><header th:replace="~{fragments/navigation :: topbar(${admin}, 'COLLEGE_ADMIN')}"></header><div class="app-layout"><aside th:replace="~{fragments/navigation :: sidebar('COLLEGE_ADMIN', 'participants')}"></aside><button type="button" class="mobile-nav-backdrop" aria-label="Close navigation"></button><main class="main-content">
+  <div class="breadcrumb"><a href="/admin/events">Manage events</a> &nbsp;›&nbsp; Participants</div>
+  <div class="page-heading"><div><span class="eyebrow">Know who's joining</span><h1>Event participants.</h1><p>Review registrations and attendee information for your events.</p></div><span class="badge badge-neutral"><span th:text="${#lists.size(participants)}">0</span> participants</span></div>
+  <section class="card card-pad" style="margin-bottom:18px">
+    <div class="form-grid" style="grid-template-columns:1.3fr 1fr">
+      <div class="form-field"><label for="eventSelect">Selected event</label><div class="field" id="eventSelect" th:text="|${event.title} · ${event.eventCode}|">Event</div></div>
+      <div class="form-field"><label>Event capacity</label><div class="progress-wrap" style="min-height:45px"><div class="progress"><span th:style="'width:' + ${event.maxSeats == 0 ? 0 : (event.registeredCount * 100 / event.maxSeats)} + '%'"></span></div><span class="progress-value"><span th:text="${event.registeredCount}">0</span> / <span th:text="${event.maxSeats}">0</span></span></div></div>
+    </div>
+  </section>
+  <section class="card">
+    <div class="card-pad" style="padding-bottom:14px">
+      <div class="card-header" style="margin-bottom:15px"><div><h2>Registered participants</h2><p>Student details and registration status.</p></div></div>
+      <div class="toolbar" style="margin-bottom:0"><div class="search-box"><span class="search-symbol" aria-hidden="true">⌕</span><input class="field" type="search" placeholder="Search name, student ID, or email" aria-label="Search participants" data-participant-search></div><select class="field" aria-label="Filter participants" data-participant-status><option value="">All statuses</option><option value="REGISTERED">Registered</option><option value="CANCELLED">Cancelled</option></select></div>
+    </div>
+    <div class="empty-state" th:if="${participants == null or #lists.isEmpty(participants)}"><span class="icon">♙</span><h3>No participants yet</h3><p>No students have registered for this event.</p></div>
+    <div class="table-wrap" th:unless="${participants == null or #lists.isEmpty(participants)}" style="border:0"><table><thead><tr><th>Student</th><th>Contact</th><th>Department</th><th>Year</th><th>Registered on</th><th>Status</th></tr></thead><tbody>
+      <tr data-participant-row th:each="participant : ${participants}" th:attr="data-status=${participant.status}">
+        <td><span class="table-title" th:text="${participant.name}">Student</span><br><span class="small muted" th:text="${participant.studentId}">Student ID</span></td>
+        <td><span th:text="${participant.email}">Email</span><br><span class="small muted" th:text="${participant.phone}">Phone</span></td>
+        <td th:text="${participant.department}">Department</td><td th:text="${participant.year}">Year</td><td th:text="${participant.registrationDate}">Registered date</td>
+        <td><span class="badge" th:classappend="${participant.status.name() == 'REGISTERED' ? ' badge-registered' : ' badge-cancelled'}" th:text="${participant.status}">Status</span></td>
+      </tr>
+    </tbody></table></div>
+  </section>
+</main></div></div><script src="/js/api.js"></script><script src="/js/app.js"></script></body>
+</html>

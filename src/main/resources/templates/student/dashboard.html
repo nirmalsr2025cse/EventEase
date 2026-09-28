@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Student dashboard | EventEase</title><link rel="stylesheet" href="/css/app.css"></head>
+<body><div class="app-shell"><header th:replace="~{fragments/navigation :: topbar(${student}, 'STUDENT')}"></header><div class="app-layout"><aside th:replace="~{fragments/navigation :: sidebar('STUDENT', 'dashboard')}"></aside><button type="button" class="mobile-nav-backdrop" aria-label="Close navigation"></button><main class="main-content">
+  <div class="breadcrumb">Good morning, <span th:text="${student.name}">Student</span></div>
+  <div class="page-heading"><div><span class="eyebrow">Student dashboard</span><h1 th:text="|Welcome, ${student.name}|">Your campus, at a glance.</h1><p>Here’s what’s happening and what you’ve got coming up.</p></div><div class="heading-actions"><a class="btn btn-primary" href="/student/events">Explore events <span aria-hidden="true">→</span></a></div></div>
+  <section class="stats-grid" aria-label="Registration summary">
+    <article class="stat-card"><div><p>Total registrations</p><strong th:text="${dashboard.totalRegistrations}">0</strong><small>All time</small></div><span class="icon">▤</span></article>
+    <article class="stat-card"><div><p>Active registrations</p><strong th:text="${dashboard.activeRegistrations}">0</strong><small>Events on your calendar</small></div><span class="icon green">✓</span></article>
+    <article class="stat-card"><div><p>Cancelled</p><strong th:text="${dashboard.cancelledRegistrations}">0</strong><small>Registration history</small></div><span class="icon amber">↗</span></article>
+    <article class="stat-card"><div><p>Upcoming events</p><strong th:text="${dashboard.upcomingEvents}">0</strong><small>Events on your calendar</small></div><span class="icon">◷</span></article>
+  </section>
+  <div class="content-grid">
+    <section class="card card-pad">
+      <div class="card-header"><div><h2>Your upcoming events</h2><p>Events you’re registered for, coming up next.</p></div><a class="table-action" href="/student/registrations">All registrations →</a></div>
+      <div class="empty-state" th:if="${upcomingRegistrations == null or #lists.isEmpty(upcomingRegistrations)}"><span class="icon">▤</span><h3>No upcoming registrations</h3><p>You have not registered for any upcoming events yet.</p><a class="btn btn-secondary" href="/student/events">Browse events</a></div>
+      <div class="event-list" th:unless="${upcomingRegistrations == null or #lists.isEmpty(upcomingRegistrations)}">
+        <article class="event-row" th:each="registration : ${upcomingRegistrations}">
+          <div class="event-row-main"><div class="date-tile"><strong th:text="${#temporals.format(registration.eventDate, 'dd')}">00</strong><small th:text="${#temporals.format(registration.eventDate, 'MMM')}">Mon</small></div><div><h3 th:text="${registration.eventTitle}">Event</h3><p><span th:text="${registration.venue}">Venue</span> · <span th:text="${#temporals.format(registration.eventDate, 'HH:mm')}">Time</span></p></div></div>
+          <div class="event-row-actions"><span class="badge badge-registered">Registered</span><a class="table-action" th:href="@{/student/events/{id}(id=${registration.eventId})}">Details</a></div>
+        </article>
+      </div>
+    </section>
+    <aside class="card card-pad">
+      <div class="card-header"><div><h2>Find your next thing</h2><p>There’s always something going on.</p></div></div>
+      <div style="padding:6px 0 13px"><span class="icon" style="width:48px;height:48px;margin-bottom:14px">✦</span><h3 style="margin-bottom:8px">Make this semester count.</h3><p class="muted small">Explore events from campus clubs and departments, all in one place.</p></div>
+      <a href="/student/events" class="btn btn-primary btn-block">Browse events <span aria-hidden="true">→</span></a>
+    </aside>
+  </div>
+</main></div></div>
+<script src="/js/api.js"></script><script src="/js/app.js"></script></body>
+</html>

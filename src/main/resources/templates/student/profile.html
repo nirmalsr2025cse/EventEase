@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>My profile | EventEase</title><link rel="stylesheet" href="/css/app.css"></head>
+<body><div class="app-shell"><header th:replace="~{fragments/navigation :: topbar(${student}, 'STUDENT')}"></header><div class="app-layout"><aside th:replace="~{fragments/navigation :: sidebar('STUDENT', 'profile')}"></aside><button type="button" class="mobile-nav-backdrop" aria-label="Close navigation"></button><main class="main-content">
+  <div class="page-heading"><div><span class="eyebrow">Your account</span><h1>My profile.</h1><p>Review your student details.</p></div></div>
+  <div class="profile-layout">
+    <section class="card card-pad"><div class="card-header"><div><h2>Student information</h2><p>Contact details associated with your account.</p></div><button type="button" class="btn btn-secondary" data-toast="Profile editing is not available yet.">Edit profile</button></div>
+      <div class="form-grid">
+        <div class="form-field"><label>Student ID</label><input class="field" th:value="${student.studentId}" readonly></div>
+        <div class="form-field"><label>Full name</label><input class="field" th:value="${student.name}" readonly></div>
+        <div class="form-field"><label>Email</label><input class="field" th:value="${student.email}" readonly></div>
+        <div class="form-field"><label>Phone</label><input class="field" th:value="${student.phone}" readonly></div>
+        <div class="form-field"><label>Department</label><input class="field" th:value="${student.department}" readonly></div>
+        <div class="form-field"><label>Year</label><input class="field" th:value="${student.year}" readonly></div>
+      </div>
+    </section>
+    <aside class="card card-pad profile-summary"><div class="profile-avatar" th:text="${#strings.substring(student.name, 0, 1)}">S</div><h2 th:text="${student.name}">Student</h2><p>Student · <span th:text="${student.department}">Department</span></p><span class="badge badge-neutral">Student account</span><div class="side-divider"></div><p class="small">Your profile helps organizers know who's joining their events.</p></aside>
+  </div>
+</main></div></div><script src="/js/api.js"></script><script src="/js/app.js"></script></body>
+</html>

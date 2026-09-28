@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0a2240">
+  <title>EventEase | Find your next campus moment</title>
+  <link rel="stylesheet" href="/css/app.css">
+</head>
+<body class="landing">
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <a class="brand" href="/" aria-label="EventEase home"><span class="logo-mark">E</span><span class="brand-name">Event<span>Ease</span></span></a>
+      <nav class="topnav" aria-label="Main navigation">
+        <a href="#features">Why EventEase</a><a href="#how-it-works">How it works</a><a href="/student/events" data-auth-required="/student/events" data-auth-role="STUDENT">Explore events</a>
+      </nav>
+      <div class="topnav-actions">
+        <a class="btn btn-secondary" href="#how-it-works" data-guest-only>How to join</a>
+        <a class="btn btn-primary" href="/student/events" data-auth-required="/student/events" data-auth-role="STUDENT" data-guest-only>Explore Events <span aria-hidden="true">→</span></a>
+        <a class="btn btn-primary" href="/student/dashboard" data-role-link="STUDENT" hidden>Student dashboard <span aria-hidden="true">→</span></a>
+        <a class="btn btn-primary" href="/admin/dashboard" data-role-link="COLLEGE_ADMIN" hidden>Admin dashboard <span aria-hidden="true">→</span></a>
+      </div>
+      <button class="menu-toggle" type="button" aria-label="Open navigation" onclick="document.querySelector('.topnav').classList.toggle('mobile-show')">☰</button>
+    </div>
+  </header>
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <span class="eyebrow">Your campus, in motion</span>
+          <h1>Make room for your <em>next big moment.</em></h1>
+          <p>Discover campus events, save your seat, and find your people. Everything happening at your college, all in one place.</p>
+          <div class="hero-buttons">
+            <a class="btn btn-primary" href="/student/events" data-auth-required="/student/events" data-auth-role="STUDENT">Explore Events <span aria-hidden="true">→</span></a>
+            <a class="btn btn-secondary" href="#how-it-works" data-auth-mode="COLLEGE_ADMIN">College Admin access</a>
+          </div>
+          <div class="hero-note">
+            <div class="avatar-stack" aria-hidden="true"><span>AS</span><span>RK</span><span>MP</span><span>+</span></div>
+            <span>Campus experiences start here.</span>
+          </div>
+        </div>
+        <div class="hero-visual" aria-label="Featured campus event preview">
+          <div class="floating-note float-one"><span class="icon">✓</span><span><strong>Your seat, sorted.</strong><small>Registration without the spreadsheet</small></span></div>
+          <article class="hero-visual-card">
+            <div class="visual-cover"><div><span class="badge badge-open pill-light">Explore campus life</span><h3>Find your next moment</h3></div></div>
+            <div class="visual-details">
+              <div><strong>Discover. Register. Show up.</strong><p>Tech, culture, community, and more.</p></div>
+              <div class="visual-seats"><strong>All in one place</strong><p>Your campus events</p><div class="capacity-line"><span></span></div></div>
+            </div>
+          </article>
+          <div class="floating-note float-two"><span class="icon">✦</span><span><strong>One campus. More to explore.</strong><small>Tech, culture, community & more</small></span></div>
+        </div>
+      </div>
+    </section>
+    <section class="section" id="features">
+      <div class="container">
+        <div class="section-heading"><span class="eyebrow">The easy way to show up</span><h2>Good things happen when it's easy to join in.</h2><p>From the first event search to the last-minute seat, EventEase keeps campus experiences simple for everyone.</p></div>
+        <div class="feature-grid">
+          <article class="feature-card"><span class="icon">⌕</span><h3>Find your thing</h3><p>Browse technical, cultural, and community events that make your campus feel more connected.</p></article>
+          <article class="feature-card"><span class="icon">▣</span><h3>Your seat, sorted</h3><p>See event details and live capacity at a glance, then register without the spreadsheet shuffle.</p></article>
+          <article class="feature-card"><span class="icon">⌁</span><h3>Made for organizers</h3><p>Publish events, manage capacity, and keep participant lists organized in one clear workspace.</p></article>
+        </div>
+      </div>
+    </section>
+    <section class="section steps-section" id="how-it-works">
+      <div class="container">
+        <div class="section-heading"><span class="eyebrow">Three simple steps</span><h2>From curious to counted in.</h2><p>No long forms. No searching through old messages. Just find an event and be part of it.</p></div>
+        <div class="steps-grid">
+          <article class="step"><span class="step-number">01</span><div><h3>Explore what's on</h3><p>Search upcoming events by title, venue, or the kind of experience you want.</p></div></article>
+          <article class="step"><span class="step-number">02</span><div><h3>Pick your moment</h3><p>Get the details, check available seats, and choose what feels right for you.</p></div></article>
+          <article class="step"><span class="step-number">03</span><div><h3>Show up and connect</h3><p>Register in a few clicks, keep track of your plans, and enjoy campus life.</p></div></article>
+        </div>
+        <section class="auth-gate" id="auth-panel" aria-labelledby="auth-title" hidden>
+          <div class="auth-gate-copy">
+            <span class="eyebrow">Your campus, in motion</span>
+            <h2 id="auth-title">Welcome to EventEase</h2>
+            <p>Sign in to continue, or create a student account to join campus events.</p>
+          </div>
+          <div class="auth-gate-card">
+            <div class="auth-gate-tabs" role="group" aria-label="Choose login or sign up">
+              <button class="auth-tab active" type="button" data-auth-switch="login" aria-pressed="true">Login</button>
+              <button class="auth-tab" type="button" data-auth-switch="signup" aria-pressed="false">Sign Up</button>
+            </div>
+            <form class="auth-form auth-gate-form" id="login-form" data-auth-form="login">
+              <div class="form-field">
+                <label for="gate-email">Email <span class="required">*</span></label>
+                <input class="field" id="gate-email" name="email" type="email" autocomplete="username" required>
+                <span class="field-error"></span>
+              </div>
+              <div class="form-field">
+                <label for="gate-password">Password <span class="required">*</span></label>
+                <input class="field" id="gate-password" name="password" type="password" autocomplete="current-password" required>
+                <span class="field-error"></span>
+              </div>
+              <p class="auth-form-message" data-form-message role="status" aria-live="polite"></p>
+              <button class="btn btn-primary btn-block" type="submit">Login <span aria-hidden="true">→</span></button>
+              <p class="auth-switch-copy">Don't have an account? <button class="text-button" type="button" data-auth-switch="signup">Sign Up</button></p>
+              <p class="small muted">Student or College Admin? EventEase detects your account from your email.</p>
+            </form>
+            <form class="auth-form auth-gate-form" id="signup-form" data-auth-form="signup" hidden>
+              <div class="form-grid">
+                <div class="form-field"><label for="gate-studentId">Student ID <span class="required">*</span></label><input class="field" id="gate-studentId" name="studentId" maxlength="100" required><span class="field-error"></span></div>
+                <div class="form-field"><label for="gate-name">Name <span class="required">*</span></label><input class="field" id="gate-name" name="name" autocomplete="name" maxlength="150" required><span class="field-error"></span></div>
+                <div class="form-field"><label for="gate-signup-email">Email <span class="required">*</span></label><input class="field" id="gate-signup-email" name="email" type="email" autocomplete="email" maxlength="254" required><span class="field-error"></span></div>
+                <div class="form-field"><label for="gate-phone">Phone <span class="required">*</span></label><input class="field" id="gate-phone" name="phone" type="tel" maxlength="30" required><span class="field-error"></span></div>
+                <div class="form-field"><label for="gate-department">Department <span class="required">*</span></label><input class="field" id="gate-department" name="department" maxlength="100" required><span class="field-error"></span></div>
+                <div class="form-field"><label for="gate-year">Year <span class="required">*</span></label><select class="field" id="gate-year" name="year" required><option value="">Select year</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select><span class="field-error"></span></div>
+                <div class="form-field"><label for="gate-signup-password">Password <span class="required">*</span></label><input class="field" id="gate-signup-password" name="password" type="password" autocomplete="new-password" minlength="8" maxlength="72" required><span class="field-error"></span></div>
+                <div class="form-field"><label for="gate-confirm-password">Confirm Password <span class="required">*</span></label><input class="field" id="gate-confirm-password" name="confirmPassword" type="password" autocomplete="new-password" minlength="8" maxlength="72" required><span class="field-error"></span></div>
+              </div>
+              <p class="auth-form-message" data-form-message role="status" aria-live="polite"></p>
+              <button class="btn btn-primary btn-block" type="submit">Create Account <span aria-hidden="true">→</span></button>
+              <p class="auth-switch-copy">Already have an account? <button class="text-button" type="button" data-auth-switch="login">Login</button></p>
+              <p class="small muted">College Admin accounts are provisioned by the institution.</p>
+            </form>
+          </div>
+        </section>
+      </div>
+    </section>
+    <section class="section">
+      <div class="container landing-cta"><div><span class="eyebrow" style="color:#9dc9f7">Ready when you are</span><h2>Your next campus story starts here.</h2><p>Explore what's happening around you.</p></div><a class="btn" href="/student/events" data-auth-required="/student/events" data-auth-role="STUDENT">Find an event <span aria-hidden="true">→</span></a></div>
+    </section>
+  </main>
+  <footer class="footer"><div class="container footer-inner"><a class="brand" href="/"><span class="logo-mark">E</span><span class="brand-name">Event<span>Ease</span></span></a><span>Made for campus moments. © 2026 EventEase</span><div class="footer-links"><a href="#how-it-works" data-auth-mode="login">Sign in</a><a href="#how-it-works" data-auth-mode="signup">Student sign up</a></div></div></footer>
+  <script src="/js/api.js"></script><script src="/js/app.js"></script><script src="/js/landing-auth.js"></script>
+</body>
+</html>

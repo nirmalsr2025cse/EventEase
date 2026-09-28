@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Manage events | EventEase</title><link rel="stylesheet" href="/css/app.css"></head>
+<body><div class="app-shell"><header th:replace="~{fragments/navigation :: topbar(${admin}, 'COLLEGE_ADMIN')}"></header><div class="app-layout"><aside th:replace="~{fragments/navigation :: sidebar('COLLEGE_ADMIN', 'events')}"></aside><button type="button" class="mobile-nav-backdrop" aria-label="Close navigation"></button><main class="main-content">
+  <div class="page-heading"><div><span class="eyebrow">Your events</span><h1>Manage events.</h1><p>Track registrations, update event details, and stay on top of capacity.</p></div><a class="btn btn-primary" href="/admin/events/create">＋ Create event</a></div>
+  <div class="toolbar"><div class="search-box"><span class="search-symbol" aria-hidden="true">⌕</span><input class="field" type="search" placeholder="Search events by title or code" aria-label="Search events" data-table-search></div><select class="field" aria-label="Filter by status" data-table-status><option value="">All statuses</option><option value="OPEN">Open</option><option value="LIMITED">Limited</option><option value="CLOSED">Closed</option></select><select class="field" aria-label="Sort events"><option>Newest first</option><option>Oldest first</option><option>Event date</option></select></div>
+  <section class="card">
+    <div class="empty-state" th:if="${events == null or #lists.isEmpty(events)}"><span class="icon">▦</span><h3>No events created yet</h3><p>Create your first event to get started.</p><a class="btn btn-primary" href="/admin/events/create">Create your first event</a></div>
+    <div class="table-wrap" th:unless="${events == null or #lists.isEmpty(events)}" style="border:0"><table><thead><tr><th>Event</th><th>Event date</th><th>Venue</th><th>Capacity</th><th>Seats</th><th>Status</th><th>Actions</th></tr></thead><tbody>
+      <tr data-table-row th:each="event : ${events}" th:attr="data-status=${event.status}">
+        <td><span class="table-title" th:text="${event.title}">Event</span><br><span class="small muted" th:text="${event.eventCode}">Event code</span></td>
+        <td th:text="${event.eventDate}">Event date</td><td th:text="${event.venue}">Venue</td><td><span th:text="${event.maxSeats}">0</span> seats</td>
+        <td><div class="progress-wrap" style="min-width:130px"><div class="progress"><span th:classappend="${event.availableSeats == 0 ? ' full' : (event.availableSeats <= 10 ? ' warn' : '')}" th:style="'width:' + ${event.maxSeats == 0 ? 0 : (event.registeredCount * 100 / event.maxSeats)} + '%'"></span></div><span class="progress-value" th:text="|${event.availableSeats} left|">0 left</span></div></td>
+        <td><span class="badge" th:classappend="${event.status == 'CLOSED' ? ' badge-closed' : (event.availableSeats <= 10 ? ' badge-limited' : ' badge-open')}" th:text="${event.status == 'CLOSED' ? 'Closed' : (event.availableSeats <= 10 ? 'Limited' : 'Open')}">Status</span></td>
+        <td><div class="table-actions"><a class="table-action" th:href="@{/admin/events/{id}(id=${event.eventId})}">View</a><a class="table-action" th:href="@{/admin/events/{id}/edit(id=${event.eventId})}">Edit</a><a class="table-action" th:href="@{/admin/events/{id}/participants(id=${event.eventId})}">Participants</a></div></td>
+      </tr>
+    </tbody></table></div>
+  </section>
+</main></div></div><script src="/js/api.js"></script><script src="/js/app.js"></script></body>
+</html>

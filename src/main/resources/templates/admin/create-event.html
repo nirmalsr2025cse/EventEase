@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Create event | EventEase</title><link rel="stylesheet" href="/css/app.css"></head>
+<body><div class="app-shell"><header th:replace="~{fragments/navigation :: topbar(${admin}, 'COLLEGE_ADMIN')}"></header><div class="app-layout"><aside th:replace="~{fragments/navigation :: sidebar('COLLEGE_ADMIN', 'create-event')}"></aside><button type="button" class="mobile-nav-backdrop" aria-label="Close navigation"></button><main class="main-content">
+  <div class="breadcrumb"><a href="/admin/dashboard">Dashboard</a> &nbsp;›&nbsp; Create event</div>
+  <div class="page-heading"><div><span class="eyebrow">Share something great</span><h1>Create an event.</h1><p>Add the details your campus community needs to join in.</p></div></div>
+  <section class="card card-pad">
+    <div class="card-header"><div><h2>Event information</h2><p>Event code, admin, and registration status are managed by the system.</p></div><span class="badge badge-neutral">Draft details</span></div>
+    <form data-api-form="/api/events" data-redirect="/admin/events">
+      <div class="form-grid">
+        <div class="form-field full"><label for="title">Event title <span class="required">*</span></label><input class="field" id="title" name="title" placeholder="Give your event a memorable name" maxlength="150" required><span class="field-help">Choose a clear title students will recognize.</span><span class="field-error"></span></div>
+        <div class="form-field full"><label for="description">Description <span class="required">*</span></label><textarea class="field" id="description" name="description" placeholder="What can attendees expect? Share the details that make your event worth joining." required></textarea><span class="field-error"></span></div>
+        <div class="form-field"><label for="eventDate">Event date & time <span class="required">*</span></label><input class="field" id="eventDate" name="eventDate" type="datetime-local" required><span class="field-error"></span></div>
+        <div class="form-field"><label for="venue">Venue <span class="required">*</span></label><input class="field" id="venue" name="venue" placeholder="e.g. Main Auditorium" required><span class="field-error"></span></div>
+        <div class="form-field"><label for="maxSeats">Maximum seats <span class="required">*</span></label><input class="field" id="maxSeats" name="maxSeats" type="number" min="1" step="1" placeholder="e.g. 100" required><span class="field-help">Set a capacity that matches your venue.</span><span class="field-error"></span></div>
+      </div>
+      <div class="form-footer"><p>Required fields are marked with <span class="required">*</span>. You can review details before publishing.</p><div class="heading-actions"><a class="btn btn-secondary" href="/admin/events">Cancel</a><button class="btn btn-primary" type="submit">Create event <span aria-hidden="true">→</span></button></div></div>
+    </form>
+  </section>
+</main></div></div><script src="/js/api.js"></script><script src="/js/app.js"></script></body>
+</html>

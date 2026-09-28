@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Explore events | EventEase</title><link rel="stylesheet" href="/css/app.css"></head>
+<body><div class="app-shell"><header th:replace="~{fragments/navigation :: topbar(${student}, 'STUDENT')}"></header><div class="app-layout"><aside th:replace="~{fragments/navigation :: sidebar('STUDENT', 'events')}"></aside><button type="button" class="mobile-nav-backdrop" aria-label="Close navigation"></button><main class="main-content">
+  <div class="page-heading"><div><span class="eyebrow">Find your next moment</span><h1>Explore campus events.</h1><p>Discover what’s happening around campus and save your spot.</p></div></div>
+  <div class="filters-card card">
+    <div class="search-box"><span class="search-symbol" aria-hidden="true">⌕</span><input class="field" type="search" placeholder="Search by event, code, or venue" aria-label="Search events" data-event-search></div>
+    <select class="field" aria-label="Filter by registration status" data-status-filter><option value="">All statuses</option><option value="OPEN">Open</option><option value="LIMITED">Limited seats</option><option value="CLOSED">Closed</option></select>
+    <input class="field" type="month" aria-label="Filter by month" data-date-filter>
+    <button class="btn btn-secondary" type="button" data-clear-filters>Clear filters</button>
+  </div>
+  <div class="empty-state card" th:if="${events == null or #lists.isEmpty(events)}" style="margin-bottom:18px"><span class="icon">⌕</span><h3>No events available</h3><p>There are currently no events available. Please check back later.</p></div>
+  <div class="event-grid" th:unless="${events == null or #lists.isEmpty(events)}">
+    <article class="event-card" data-event-card th:each="event : ${events}"
+      th:attr="data-status=${event.status == 'OPEN' and event.availableSeats <= 10 ? 'LIMITED' : event.status},data-date=${#temporals.format(event.eventDate, 'yyyy-MM-dd')}">
+      <div class="event-image image-tech">
+        <span class="badge" th:classappend="${event.status == 'CLOSED' ? ' badge-closed' : (event.availableSeats <= 10 ? ' badge-limited' : ' badge-open')}"
+          th:text="${event.status == 'CLOSED' ? 'Registration closed' : (event.availableSeats <= 10 ? event.availableSeats + ' seats left' : 'Registration open')}">Registration open</span>
+      </div>
+      <div class="event-card-body">
+        <div class="event-code" th:text="${event.eventCode}">EVT-000001</div><h3 th:text="${event.title}">Event title</h3>
+        <p th:text="${event.description}">Event description</p>
+        <div class="event-meta">
+          <span>◷ &nbsp;<span th:text="${#temporals.format(event.eventDate, 'dd MMM yyyy · HH:mm')}">Event date</span></span>
+          <span>⌖ &nbsp;<span th:text="${event.venue}">Venue</span></span>
+        </div>
+        <div class="event-capacity">
+          <div class="progress-wrap"><div class="progress"><span th:classappend="${event.availableSeats == 0 ? ' full' : (event.availableSeats <= 10 ? ' warn' : '')}" th:style="'width:' + ${event.maxSeats == 0 ? 0 : (event.registeredCount * 100 / event.maxSeats)} + '%'"></span></div>
+            <span class="progress-value"><span th:text="${event.registeredCount}">0</span> / <span th:text="${event.maxSeats}">0</span></span></div>
+          <div class="seat-note" th:classappend="${event.availableSeats == 0 ? ' full' : (event.availableSeats <= 10 ? ' warn' : '')}"
+            th:text="${event.availableSeats == 0 ? 'No seats remaining' : event.availableSeats + ' seats remaining'}">Seats remaining</div>
+        </div>
+        <div class="event-card-footer">
+          <a class="btn btn-secondary" th:href="@{/student/events/{id}(id=${event.eventId})}">View details</a>
+          <button class="btn btn-primary" type="button" data-api-action="post" th:attr="data-api-path=@{/api/events/{id}/register(id=${event.eventId})}"
+            th:if="${event.status == 'OPEN' and event.availableSeats > 0 and !#sets.contains(registeredEventIds, event.eventId)}">Register</button>
+          <button class="btn btn-secondary" type="button" disabled th:if="${event.status == 'CLOSED'}">Registration closed</button>
+          <button class="btn btn-secondary" type="button" disabled th:if="${#sets.contains(registeredEventIds, event.eventId)}">Already registered</button>
+        </div>
+      </div>
+    </article>
+  </div>
+  <div class="empty-state card" data-no-events hidden style="margin-top:18px"><span class="icon">⌕</span><h3>No events match those filters</h3><p>Try another search or clear your filters to see all campus events.</p><button class="btn btn-secondary" data-clear-filters type="button">Clear filters</button></div>
+</main></div></div><script src="/js/api.js"></script><script src="/js/app.js"></script></body>
+</html>

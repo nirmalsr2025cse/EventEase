@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>My registrations | EventEase</title><link rel="stylesheet" href="/css/app.css"></head>
+<body><div class="app-shell"><header th:replace="~{fragments/navigation :: topbar(${student}, 'STUDENT')}"></header><div class="app-layout"><aside th:replace="~{fragments/navigation :: sidebar('STUDENT', 'registrations')}"></aside><button type="button" class="mobile-nav-backdrop" aria-label="Close navigation"></button><main class="main-content">
+  <div class="page-heading"><div><span class="eyebrow">Your plans</span><h1>My registrations.</h1><p>All your campus plans, together in one place.</p></div><a class="btn btn-primary" href="/student/events">Find another event <span aria-hidden="true">→</span></a></div>
+  <div class="toolbar"><div class="search-box"><span class="search-symbol" aria-hidden="true">⌕</span><input class="field" type="search" placeholder="Search your registrations" aria-label="Search registrations" data-table-search></div><select class="field" aria-label="Filter registration status" data-table-status><option value="">All registrations</option><option value="REGISTERED">Registered</option><option value="CANCELLED">Cancelled</option></select></div>
+  <section class="card">
+    <div class="table-wrap" style="border:0">
+      <table><thead><tr><th>Event</th><th>Date & venue</th><th>Registered on</th><th>Status</th><th>Action</th></tr></thead>
+        <tbody>
+          <tr data-table-row th:each="registration : ${registrations}" th:attr="data-status=${registration.status}">
+            <td><span class="table-title" th:text="${registration.eventTitle}">Event</span><br><span class="small muted" th:text="${registration.eventCode}">Event code</span></td>
+            <td><span th:text="${registration.eventDate}">Event date</span><br><span class="small muted" th:text="${registration.venue}">Venue</span></td>
+            <td th:text="${registration.registrationDate}">Registered date</td>
+            <td><span class="badge" th:classappend="${registration.status.name() == 'REGISTERED' ? ' badge-registered' : ' badge-cancelled'}" th:text="${registration.status}">Status</span></td>
+            <td><div class="table-actions" th:if="${registration.status.name() == 'REGISTERED'}"><a class="table-action" th:href="@{/student/events/{id}(id=${registration.eventId})}">Details</a><button class="table-action" type="button" data-open-modal="#cancel-modal" th:attr="data-registration-id=${registration.registrationId}">Cancel</button></div><span class="small muted" th:if="${registration.status.name() == 'CANCELLED' and registration.cancelledAt != null}" th:text="|Cancelled ${registration.cancelledAt}|">Cancelled</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="empty-state" th:if="${registrations == null or #lists.isEmpty(registrations)}"><span class="icon">▤</span><h3>No registrations found</h3><p>You have not registered for any events yet.</p><a class="btn btn-primary" href="/student/events">Explore events</a></div>
+  </section>
+  <div class="modal-backdrop" id="cancel-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="cancel-title"><div class="modal"><span class="icon" style="color:var(--red);background:#fcebed">!</span><h2 id="cancel-title" style="margin-top:13px">Cancel this registration?</h2><p>Are you sure you want to cancel your registration? Your seat may become available to another student.</p><div class="modal-actions"><button class="btn btn-secondary" type="button" data-close-modal>Keep registration</button><button class="btn btn-danger" type="button" data-close-modal data-api-action="delete" data-api-path="/api/registrations/1">Confirm cancellation</button></div></div></div>
+</main></div></div><script src="/js/api.js"></script><script src="/js/app.js"></script></body>
+</html>

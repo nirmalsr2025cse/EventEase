@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+<header class="app-topbar" th:fragment="topbar(user, role)">
+  <div class="container">
+    <div class="app-top-left">
+      <button class="menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false">☰</button>
+      <a class="brand" href="/" aria-label="EventEase home"><span class="logo-mark">E</span><span class="brand-name">Event<span>Ease</span></span></a>
+      <span class="app-context" th:text="${role == 'STUDENT' ? 'Student Portal' : 'College Admin Portal'}">Portal</span>
+    </div>
+    <div class="app-top-right">
+      <a class="profile-chip" th:href="${role == 'STUDENT' ? '/student/profile' : '/admin/profile'}">
+        <span class="profile-avatar" th:text="${#strings.substring(user.name, 0, 1)}">A</span>
+        <span th:text="${user.name}">Account</span>
+      </a>
+    </div>
+  </div>
+</header>
+<aside class="sidebar" aria-label="Main navigation" th:fragment="sidebar(role, activePage)">
+  <p class="sidebar-kicker" th:text="${role == 'STUDENT' ? 'Student menu' : 'College admin menu'}">Menu</p>
+  <nav class="side-nav" th:if="${role == 'STUDENT'}">
+    <a href="/student/dashboard" th:classappend="${activePage == 'dashboard'} ? ' active'" th:attr="aria-current=${activePage == 'dashboard'} ? 'page' : null"><span class="nav-icon">⌂</span>Dashboard</a>
+    <a href="/student/events" th:classappend="${activePage == 'events'} ? ' active'" th:attr="aria-current=${activePage == 'events'} ? 'page' : null"><span class="nav-icon">▦</span>Browse Events</a>
+    <a href="/student/registrations" th:classappend="${activePage == 'registrations'} ? ' active'" th:attr="aria-current=${activePage == 'registrations'} ? 'page' : null"><span class="nav-icon">▤</span>My Registrations</a>
+    <a href="/student/profile" th:classappend="${activePage == 'profile'} ? ' active'" th:attr="aria-current=${activePage == 'profile'} ? 'page' : null"><span class="nav-icon">◉</span>My Profile</a>
+  </nav>
+  <nav class="side-nav" th:if="${role == 'COLLEGE_ADMIN'}">
+    <a href="/admin/dashboard" th:classappend="${activePage == 'dashboard'} ? ' active'" th:attr="aria-current=${activePage == 'dashboard'} ? 'page' : null"><span class="nav-icon">⌂</span>Dashboard</a>
+    <a href="/admin/events" th:classappend="${activePage == 'events'} ? ' active'" th:attr="aria-current=${activePage == 'events'} ? 'page' : null"><span class="nav-icon">▦</span>My Events</a>
+    <a href="/admin/events/create" th:classappend="${activePage == 'create-event'} ? ' active'" th:attr="aria-current=${activePage == 'create-event'} ? 'page' : null"><span class="nav-icon">＋</span>Create Event</a>
+    <a href="/admin/profile" th:classappend="${activePage == 'profile'} ? ' active'" th:attr="aria-current=${activePage == 'profile'} ? 'page' : null"><span class="nav-icon">◉</span>My Profile</a>
+  </nav>
+  <div class="side-divider"></div>
+  <nav class="side-nav">
+    <a href="/"><span class="nav-icon">↗</span>Back to home</a>
+    <a href="/login" data-logout><span class="nav-icon">⇥</span>Sign out</a>
+  </nav>
+  <div class="sidebar-bottom"><strong>Make campus count.</strong>Discover experiences, meet people, and make every event memorable.</div>
+</aside>
+</body>
+</html>

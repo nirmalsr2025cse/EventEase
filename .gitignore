@@ -1,0 +1,37 @@
+# Java / Maven
+/target/
+*.class
+*.jar
+*.war
+*.ear
+hs_err_pid*
+replay_pid*
+
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+/application-local.properties
+/application-local.yml
+/application-local.yaml
+
+# IDE configuration
+.idea/
+.vscode/
+*.iml
+.run/
+
+# Logs and runtime files
+*.log
+/logs/
+*.pid
+*.hprof
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.swp
+*.bak

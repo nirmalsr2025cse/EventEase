@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>College Admin dashboard | EventEase</title><link rel="stylesheet" href="/css/app.css"></head>
+<body><div class="app-shell"><header th:replace="~{fragments/navigation :: topbar(${admin}, 'COLLEGE_ADMIN')}"></header><div class="app-layout"><aside th:replace="~{fragments/navigation :: sidebar('COLLEGE_ADMIN', 'dashboard')}"></aside><button type="button" class="mobile-nav-backdrop" aria-label="Close navigation"></button><main class="main-content">
+  <div class="page-heading"><div><span class="eyebrow">College Admin dashboard</span><h1 th:text="|Welcome, ${admin.name}|">Welcome</h1><p>Here’s how your events are shaping up.</p></div><a class="btn btn-primary" href="/admin/events/create">＋ Create event</a></div>
+  <section class="stats-grid" aria-label="Event statistics">
+    <article class="stat-card"><div><p>Total events</p><strong th:text="${dashboard.totalEvents}">0</strong><small>Created by you</small></div><span class="icon">▦</span></article>
+    <article class="stat-card"><div><p>Open events</p><strong th:text="${dashboard.openEvents}">0</strong><small>Accepting registrations</small></div><span class="icon green">✓</span></article>
+    <article class="stat-card"><div><p>Closed events</p><strong th:text="${dashboard.closedEvents}">0</strong><small>Registration ended</small></div><span class="icon amber">◷</span></article>
+    <article class="stat-card"><div><p>Active registrations</p><strong th:text="${dashboard.totalRegistrations}">0</strong><small>Across your events</small></div><span class="icon">♙</span></article>
+  </section>
+  <div class="content-grid">
+    <section class="card card-pad">
+      <div class="card-header"><div><h2>Upcoming events</h2><p>Keep an eye on what’s coming up next.</p></div><a class="table-action" href="/admin/events">Manage all →</a></div>
+      <div class="empty-state" th:if="${upcomingEvents == null or #lists.isEmpty(upcomingEvents)}"><span class="icon">▦</span><h3>No upcoming events</h3><p>Create an event to start welcoming participants.</p><a class="btn btn-secondary" href="/admin/events/create">Create event</a></div>
+      <div class="event-list" th:unless="${upcomingEvents == null or #lists.isEmpty(upcomingEvents)}">
+        <article class="event-row" th:each="event : ${upcomingEvents}">
+          <div class="event-row-main"><div class="date-tile"><strong th:text="${#temporals.format(event.eventDate, 'dd')}">00</strong><small th:text="${#temporals.format(event.eventDate, 'MMM')}">Mon</small></div><div><h3 th:text="${event.title}">Event</h3><p><span th:text="${event.eventCode}">Event code</span> · <span th:text="${event.venue}">Venue</span></p></div></div>
+          <div class="event-row-actions"><span class="badge" th:classappend="${event.status == 'CLOSED' ? ' badge-closed' : (event.availableSeats <= 10 ? ' badge-limited' : ' badge-open')}" th:text="${event.status == 'CLOSED' ? 'Closed' : (event.availableSeats <= 10 ? event.availableSeats + ' seats left' : 'Open')}">Status</span><a class="table-action" th:href="@{/admin/events/{id}(id=${event.eventId})}">Manage</a></div>
+        </article>
+      </div>
+    </section>
+    <aside class="card card-pad">
+      <div class="card-header"><div><h2>Registration snapshot</h2><p>Across upcoming events</p></div><span class="icon">↗</span></div>
+      <div class="empty-state" style="padding:24px 8px"><span class="icon">↗</span><h3>Registration insights</h3><p>Statistics will reflect registrations across your events.</p></div>
+    </aside>
+  </div>
+  <section class="card card-pad" style="margin-top:18px">
+    <div class="card-header"><div><h2>Recent events</h2><p>Quick overview of your latest activity.</p></div><a class="table-action" href="/admin/events">View all events</a></div>
+    <div class="empty-state" th:if="${events == null or #lists.isEmpty(events)}"><span class="icon">▦</span><h3>No events created yet</h3><p>Create your first event to get started.</p></div>
+    <div class="table-wrap" th:unless="${events == null or #lists.isEmpty(events)}"><table><thead><tr><th>Event</th><th>Date</th><th>Registrations</th><th>Capacity</th><th>Status</th></tr></thead><tbody>
+      <tr th:each="event : ${events}"><td><span class="table-title" th:text="${event.title}">Event</span><br><span class="small muted" th:text="${event.eventCode}">Event code</span></td><td th:text="${event.eventDate}">Date</td><td><span th:text="${event.registeredCount}">0</span> registered</td><td><div class="progress-wrap" style="min-width:130px"><div class="progress"><span th:style="'width:' + ${event.maxSeats == 0 ? 0 : (event.registeredCount * 100 / event.maxSeats)} + '%'"></span></div><span class="progress-value" th:text="|${event.availableSeats} left|">0 left</span></div></td><td><span class="badge" th:classappend="${event.status == 'CLOSED' ? ' badge-closed' : ' badge-open'}" th:text="${event.status}">Status</span></td></tr>
+    </tbody></table></div>
+  </section>
+</main></div></div><script src="/js/api.js"></script><script src="/js/app.js"></script></body>
+</html>

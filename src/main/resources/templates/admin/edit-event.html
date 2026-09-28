@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Edit event | EventEase</title><link rel="stylesheet" href="/css/app.css"></head>
+<body><div class="app-shell"><header th:replace="~{fragments/navigation :: topbar(${admin}, 'COLLEGE_ADMIN')}"></header><div class="app-layout"><aside th:replace="~{fragments/navigation :: sidebar('COLLEGE_ADMIN', 'events')}"></aside><button type="button" class="mobile-nav-backdrop" aria-label="Close navigation"></button><main class="main-content">
+  <div class="breadcrumb"><a href="/admin/events">Manage events</a> &nbsp;›&nbsp; Edit event</div>
+  <div class="page-heading"><div><span class="eyebrow">Keep details up to date</span><h1>Edit event.</h1><p>Update the information attendees see.</p></div><span class="badge badge-neutral" th:text="${event.eventCode}">Event code</span></div>
+  <section class="card card-pad" style="max-width:850px">
+    <div class="card-header"><div><h2>Event information</h2><p>Event code, admin, registration count, and status are controlled by the system.</p></div></div>
+    <form data-api-form="/api/events/1" th:attr="data-api-form=@{/api/events/{id}(id=${event.eventId})}" data-method="put" data-redirect="/admin/events">
+      <div class="form-grid">
+        <div class="form-field full"><label for="title">Event title <span class="required">*</span></label><input class="field" id="title" name="title" th:value="${event.title}" required><span class="field-error"></span></div>
+        <div class="form-field full"><label for="description">Description <span class="required">*</span></label><textarea class="field" id="description" name="description" th:text="${event.description}" required></textarea><span class="field-error"></span></div>
+        <div class="form-field"><label for="eventDate">Event date & time <span class="required">*</span></label><input class="field" id="eventDate" name="eventDate" type="datetime-local" th:value="${#temporals.format(event.eventDate, 'yyyy-MM-dd''T''HH:mm')}" required><span class="field-error"></span></div>
+        <div class="form-field"><label for="venue">Venue <span class="required">*</span></label><input class="field" id="venue" name="venue" th:value="${event.venue}" required><span class="field-error"></span></div>
+        <div class="form-field"><label for="maxSeats">Maximum seats <span class="required">*</span></label><input class="field" id="maxSeats" name="maxSeats" type="number" min="1" th:value="${event.maxSeats}" required><span class="field-help">Must not be lower than current registrations (<span th:text="${event.registeredCount}">0</span>).</span><span class="field-error"></span></div>
+      </div>
+      <div class="form-footer"><p>System-managed values cannot be edited here.</p><div class="heading-actions"><a class="btn btn-secondary" href="/admin/events">Cancel</a><button class="btn btn-primary" type="submit">Save changes</button></div></div>
+    </form>
+  </section>
+</main></div></div><script src="/js/api.js"></script><script src="/js/app.js"></script></body>
+</html>
